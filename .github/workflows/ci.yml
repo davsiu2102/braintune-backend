@@ -46,10 +46,12 @@ jobs:
       - name: Build Docker image
         run: docker build -t braintune-backend:latest ./braintune-backend
 
-      # 7. Probar la imagen Docker
-      - name: Run Docker container
+     # 7. Probar la imagen Docker
+      - name: Run Docker container (test)
         working-directory: ./braintune-backend
-        run: docker run -d -p 8080:8080 braintune-backend:latest
+        run: |
+          docker run --name braintune-test --rm -d -p 8080:8080 braintune-backend:latest
+
 
       # 8. Subir imagen a Docker Hub
       - name: Log in to Docker Hub
@@ -57,8 +59,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push Docker image
+          
+      # 9. Hacer push al repositorio Docker Hub
+      - name: Push Docker image - tag
         working-directory: ./braintune-backend
-        run: docker tag braintune-backend:latest your-dockerhub-username/braintune-backend:latest
-      - run: docker push your-dockerhub-username/braintune-backend:latest
+        run: docker tag braintune-backend:latest $DOCKER_USERNAME/braintune-backend:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: Push Docker image - push
+        working-directory: ./braintune-backend
+        run: docker push $DOCKER_USERNAME/braintune-backend:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
