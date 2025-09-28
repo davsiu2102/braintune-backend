@@ -18,6 +18,7 @@ fun Application.authRoutes() {
         post("/login") {
             val body = call.receive<LoginRequest>()
             val user = users.find { it.username == body.username && it.password == body.password }
+
             if (user == null) {
                 call.respond(HttpStatusCode.Unauthorized, "Credenciales inválidas")
                 return@post
@@ -29,7 +30,7 @@ fun Application.authRoutes() {
                 .withExpiresAt(Date(System.currentTimeMillis() + 3600_000)) // 1h
                 .sign(Algorithm.HMAC256("secret123456"))
 
-            call.respond(mapOf("token" to token))
+            call.respond(LoginResponse(token))
         }
     }
 }
