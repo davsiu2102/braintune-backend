@@ -4,10 +4,12 @@
 [versions]
 guava = "33.4.6-jre"
 junit-jupiter-engine = "5.12.1"
+testng = "6.9.6"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
+testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.2.0" }
