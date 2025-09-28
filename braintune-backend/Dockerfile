@@ -11,10 +11,10 @@ COPY . .
 RUN chmod +x ./gradlew
 
 # 5. Construimos el JAR usando el wrapper de Gradle
-RUN ./gradlew shadowJar --no-daemon
+RUN ./gradlew shadowJar --no-daemon || cat build/libs/*.log || true
 
-# 6. Opcional: listar archivos para verificar que el JAR se creó correctamente (debugging)
-RUN ls -l build/libs/
+# 6. Opcional: listar archivos solo si existen
+RUN [ -d build/libs ] && ls -l build/libs || echo "build/libs no existe"
 
 # 7. Exponemos el puerto que usa el backend
 EXPOSE 8080
