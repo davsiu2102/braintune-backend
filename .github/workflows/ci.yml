@@ -44,8 +44,7 @@ jobs:
 
       # 6. Construir imagen Docker
       - name: Build Docker image
-        working-directory: ./braintune-backend
-        run: docker build -t braintune-backend:latest .
+        run: docker build -t braintune-backend:latest ./braintune-backend
 
       # 7. Probar la imagen Docker
       - name: Run Docker container
