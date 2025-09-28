@@ -13,8 +13,11 @@ RUN chmod +x ./gradlew
 # 5. Construimos el JAR usando el wrapper de Gradle
 RUN ./gradlew shadowJar --no-daemon
 
-# 6. Exponemos el puerto que usa tu backend
+# 6. Opcional: listar archivos para verificar que el JAR se creó correctamente (debugging)
+RUN ls -l build/libs/
+
+# 7. Exponemos el puerto que usa el backend
 EXPOSE 8080
 
-# 7. Comando para ejecutar el JAR generado
-CMD ["java", "-jar", "build/libs/braintune-backend-all.jar"]
+# 8. Ejecutamos el JAR generado usando un patrón flexible para el nombre
+CMD ["sh", "-c", "java -jar build/libs/*all.jar"]
