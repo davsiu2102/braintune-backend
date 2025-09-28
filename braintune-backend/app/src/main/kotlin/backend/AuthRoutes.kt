@@ -10,9 +10,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import java.util.*
 
-@Serializable
-data class LoginRequest(val username: String, val password: String)
-
 fun Application.authRoutes() {
     routing {
         post("/login") {
