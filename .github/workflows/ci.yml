@@ -14,11 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files
+      - name: List repo files
         run: ls -la
 
       - name: Give Gradle wrapper permission
-        run: chmod +x gradlew
+        run: chmod +x braintune-backend/gradlew
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -37,4 +37,5 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
+        working-directory: braintune-backend
         run: ./gradlew build --no-daemon
