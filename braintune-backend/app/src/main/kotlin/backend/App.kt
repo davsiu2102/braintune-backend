@@ -19,7 +19,7 @@ val users = listOf(
     User("david", "abcd", Role.USER)
 )
 
-fun main() {
+fun main() { // función main
     embeddedServer(Netty, port = 8080) {
         module()
     }.start(wait = true)
