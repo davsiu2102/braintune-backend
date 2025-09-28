@@ -39,4 +39,5 @@ jobs:
 
       # 5. Construir ShadowJar (solo tu backend)
       - name: Build ShadowJar
-        run: ./braintune-backend/gradlew clean shadowJar --no-daemon
+        working-directory: ./braintune-backend
+        run: ./gradlew clean shadowJar --no-daemon
