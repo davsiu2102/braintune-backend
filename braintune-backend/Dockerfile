@@ -14,7 +14,8 @@ RUN chmod +x ./gradlew
 RUN ./gradlew shadowJar --no-daemon || cat build/libs/*.log || true
 
 # 6. Opcional: listar archivos solo si existen
-RUN [ -d build/libs ] && ls -l build/libs || echo "build/libs no existe"
+RUN if [ -d build/libs ]; then ls -l build/libs; else echo "build/libs no existe"; fi
+
 
 # 7. Exponemos el puerto que usa el backend
 EXPOSE 8080
