@@ -6,7 +6,7 @@ COPY . .
 RUN chmod +x ./gradlew
 RUN ./gradlew shadowJar --no-daemon
 
-# Logueamos si el JAR se creó correctamente
+# Verificar JAR
 RUN if [ -f build/libs/*all.jar ]; then \
         echo "JAR generado correctamente:"; \
         ls -l build/libs/; \
@@ -16,10 +16,11 @@ RUN if [ -f build/libs/*all.jar ]; then \
     fi
 
 # ---- Stage 2: Runtime ----
-FROM eclipse-temurin:17-jdk-jre
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 COPY --from=build /app/build/libs/*all.jar ./app.jar
 
 EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
+
