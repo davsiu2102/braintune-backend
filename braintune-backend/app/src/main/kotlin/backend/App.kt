@@ -1,5 +1,7 @@
 package backend
 
+import kotlinx.serialization.Serializable
+import backend.User
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.engine.*
