@@ -11,18 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clonar el repo
+      # 1. Clonar el repositorio
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Configurar JDK 17
+      # 2. Configurar JDK 17 antes de cualquier Gradle
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Cache de Gradle
+      # 3. Comprobar versión de Java y Gradle
+      - name: Check Java & Gradle version
+        run: |
+          java -version
+          ./braintune-backend/gradlew --version
+
+      # 4. Cache de Gradle
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -33,16 +39,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 4. Dar permisos al wrapper de Gradle
+      # 5. Dar permisos al wrapper de Gradle
       - name: Give Gradle wrapper permission
         run: chmod +x ./braintune-backend/gradlew
 
-      # 5. Construir el JAR con ShadowJar + logs completos
-      - name: Build ShadowJar with logs
+      # 6. Construir JAR con ShadowJar (logs completos)
+      - name: Build ShadowJar
         working-directory: ./braintune-backend
-        run: ./gradlew clean shadowJar --no-daemon --info --stacktrace
+        run: ./gradlew clean shadowJar --no-daemon --stacktrace --info
 
-      # 6. Verificar que el JAR exista y loguear
+      # 7. Verificar que el JAR se generó
       - name: Check JAR existence
         working-directory: ./braintune-backend
         run: |
@@ -54,24 +60,24 @@ jobs:
             exit 1
           fi
 
-      # 7. Construir imagen Docker runtime-only
+      # 8. Construir imagen Docker runtime-only
       - name: Build Docker image
         working-directory: ./braintune-backend
         run: docker build -t braintune-backend:latest .
 
-      # 8. Probar la imagen Docker
+      # 9. Probar la imagen Docker
       - name: Run Docker container (test)
         working-directory: ./braintune-backend
         run: docker run --name braintune-test --rm -d -p 8080:8080 braintune-backend:latest
 
-      # 9. Log in a Docker Hub
+      # 10. Log in a Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 10. Tag y push de la imagen
+      # 11. Tag y push de la imagen
       - name: Push Docker image
         working-directory: ./braintune-backend
         run: |
