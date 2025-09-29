@@ -16,12 +16,9 @@ repositories {
 
 dependencies {
     // Ktor
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation(platform("io.ktor:ktor-bom:$ktor_version"))
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-netty")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
