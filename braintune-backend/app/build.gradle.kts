@@ -44,15 +44,6 @@ application {
     mainClass.set("backend.AppKt") // Ajusta al paquete correcto de tu App.kt
 }
 
-// ShadowJar actualizado para Gradle 7+
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    manifest {
-        attributes(
-            "Main-Class" to "backend.AppKt"
-        )
-    }
-}
-
 tasks.test {
     useJUnitPlatform()
 }
