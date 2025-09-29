@@ -6,7 +6,6 @@ val jwtVersion = "4.4.0"
 plugins {
     kotlin("jvm") version "1.9.10"             // Kotlin
     kotlin("plugin.serialization") version "1.9.10" // Para @Serializable
-    application                                     // Para ejecutar la app
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -40,8 +39,11 @@ java {
     }
 }
 
-application {
-    mainClass.set("backend.AppKt") // Ajusta al paquete correcto de tu App.kt
+// Configuración para que ShadowJar sepa qué clase ejecutar
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    manifest {
+        attributes["Main-Class"] = "backend.AppKt"
+    }
 }
 
 tasks.test {
