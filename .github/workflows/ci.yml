@@ -33,24 +33,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 4. Permisos al wrapper de Gradle
+      # 4. Dar permisos al wrapper de Gradle
       - name: Give Gradle wrapper permission
         run: chmod +x ./braintune-backend/gradlew
 
-      # 5. Construir el JAR
-      - name: Build ShadowJar
+      # 5. Construir el JAR con ShadowJar + logs completos
+      - name: Build ShadowJar with logs
         working-directory: ./braintune-backend
-        run: ./gradlew clean shadowJar --no-daemon
+        run: ./gradlew clean shadowJar --no-daemon --info --stacktrace
 
-      # 6. Verificar que el JAR exista
-      - name: Check JAR
+      # 6. Verificar que el JAR exista y loguear
+      - name: Check JAR existence
         working-directory: ./braintune-backend
         run: |
-          if [ -f build/libs/*all.jar ]; then
-            echo "JAR generado correctamente:"
+          if ls build/libs/*all.jar 1> /dev/null 2>&1; then
+            echo "✅ JAR generado correctamente:"
             ls -l build/libs/
           else
-            echo "ERROR: JAR no se generó"
+            echo "❌ ERROR: JAR no se generó"
             exit 1
           fi
 
