@@ -15,23 +15,23 @@ repositories {
 }
 
 dependencies {
-    // Ktor
+    // Ktor - Bill of Materials (para manejar versiones automáticamente)
     implementation(platform("io.ktor:ktor-bom:$ktor_version"))
+
+    // Ktor - Módulos necesarios para el backend
     implementation("io.ktor:ktor-server-core")
     implementation("io.ktor:ktor-server-netty")
+    implementation("io.ktor:ktor-server-auth")
+    implementation("io.ktor:ktor-server-auth-jwt")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation(libs.testng)
+    implementation("ch.qos.logback:logback-classic:$logback_version")
 
-    // 🔹 Dependencias de testing
-    testImplementation("io.ktor:ktor-server-tests-jvm:${ktorVersion}")
-    //testImplementation("io.ktor:ktor-server-test-host:${ktorVersion}")
-    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    testImplementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${kotlinVersion}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
-    implementation(kotlin("test"))
+    // Dependencias de Testing
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
 
 java {
