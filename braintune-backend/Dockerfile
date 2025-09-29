@@ -1,26 +1,22 @@
-# ---- Stage 1: Build ----
-FROM eclipse-temurin:17-jdk AS build
-
-WORKDIR /app
-COPY . .
-RUN chmod +x ./gradlew
-RUN ./gradlew shadowJar --no-daemon
-
-# Verificar JAR
-RUN if [ -f build/libs/*all.jar ]; then \
-        echo "JAR generado correctamente:"; \
-        ls -l build/libs/; \
-    else \
-        echo "ERROR: JAR no se creó en build/libs/"; \
-        exit 1; \
-    fi
-
-# ---- Stage 2: Runtime ----
+# Solo necesita JDK para ejecutar el JAR
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
-COPY --from=build /app/build/libs/*all.jar ./app.jar
+
+# Copiamos el JAR ya generado por CI
+COPY build/libs/*all.jar ./app.jar
+
+# Log para verificar que el JAR exista
+RUN if [ -f app.jar ]; then \
+        echo "JAR copiado correctamente:"; \
+        ls -l ./app.jar; \
+    else \
+        echo "ERROR: JAR no existe"; \
+        exit 1; \
+    fi
 
 EXPOSE 8080
+
 CMD ["java", "-jar", "app.jar"]
+
 
